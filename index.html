@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink:    #f7c5d0;
+    --peach:   #fde4cc;
+    --yellow:  #fdf4c2;
+    --mint:    #c8eede;
+    --lavender:#ddd0f5;
+    --cream:   #fffaf5;
+    --brown:   #7a5c4e;
+    --text:    #4a3728;
+    --muted:   #a08070;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); font-family:'Zen Maru Gothic',sans-serif; color:var(--text); overflow-x:hidden; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position:relative; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:60px 20px;
+    background:
+      radial-gradient(ellipse at 20% 30%, var(--pink) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 70%, var(--lavender) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, var(--peach) 0%, transparent 70%),
+      var(--cream);
+    overflow:hidden;
+  }
+  .confetti-layer { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  .confetti-piece {
+    position:absolute; border-radius:50%; opacity:0.35;
+    animation:floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform:translateY(110vh) rotate(0deg); opacity:0; }
+    10%  { opacity:0.35; }
+    90%  { opacity:0.35; }
+    100% { transform:translateY(-10vh) rotate(720deg); opacity:0; }
+  }
+  .hero-badge {
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:clamp(0.85rem,2vw,1rem); color:var(--muted);
+    letter-spacing:0.15em; margin-bottom:16px;
+    animation:fadeUp 1s ease both;
+  }
+  .hero-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2.8rem,10vw,6rem); font-weight:700; line-height:1.1;
+    background:linear-gradient(135deg,#c47a7a 0%,#b06aae 50%,#7a8ec4 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    animation:fadeUp 1s 0.2s ease both; margin-bottom:12px;
+  }
+  .hero-name {
+    font-size:clamp(1.5rem,5vw,2.8rem); font-weight:500; color:var(--brown);
+    animation:fadeUp 1s 0.4s ease both; margin-bottom:24px;
+  }
+  .hero-date {
+    font-size:0.9rem; color:var(--muted); letter-spacing:0.1em;
+    animation:fadeUp 1s 0.6s ease both;
+  }
+  .scroll-hint {
+    position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--muted); font-size:0.75rem; letter-spacing:0.1em;
+    animation:fadeIn 2s 1.5s ease both;
+  }
+  .scroll-arrow {
+    width:22px; height:22px;
+    border-right:2px solid var(--muted); border-bottom:2px solid var(--muted);
+    transform:rotate(45deg); animation:bounce 1.5s infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform:rotate(45deg) translateY(0); }
+    50%      { transform:rotate(45deg) translateY(5px); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+  /* ===== GALLERY ===== */
+  .section-wrap { padding:80px 20px; max-width:1100px; margin:0 auto; }
+  .section-label {
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:0.85rem; color:var(--muted); letter-spacing:0.2em;
+    text-align:center; margin-bottom:8px;
+  }
+  .section-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.6rem,4vw,2.4rem); font-weight:700;
+    text-align:center; color:var(--text); margin-bottom:48px;
+  }
+
+  .gallery-stage {
+    position:relative; width:100%; height:560px;
+    border-radius:32px; overflow:hidden;
+    background:linear-gradient(135deg,#fef3f6 0%,#f0eafd 50%,#eafaf3 100%);
+    box-shadow:inset 0 0 60px rgba(180,140,120,0.08);
+  }
+  .float-card {
+    position:absolute; border-radius:18px; overflow:hidden;
+    box-shadow:0 8px 32px rgba(100,60,40,0.18);
+    cursor:pointer;
+    transition:transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
+  }
+  .float-card:hover {
+    transform:scale(1.06) rotate(0deg) !important;
+    box-shadow:0 18px 50px rgba(100,60,40,0.28);
+    z-index:20 !important;
+  }
+  .float-card img {
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:opacity 0.6s ease;
+  }
+  .float-card img.fading { opacity:0; }
+  .photo-placeholder-box {
+    width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; font-size:0.72rem; color:var(--muted);
+  }
+  .photo-placeholder-box .ph-icon { font-size:2rem; opacity:0.5; }
+  .bg-pc0  { background:linear-gradient(135deg,#fcd5ce,#fec89a); }
+  .bg-pc1  { background:linear-gradient(135deg,#d7f0e4,#b5ead7); }
+  .bg-pc2  { background:linear-gradient(135deg,#e2d9f3,#c5b8ea); }
+  .bg-pc3  { background:linear-gradient(135deg,#fff1c1,#ffe599); }
+  .bg-pc4  { background:linear-gradient(135deg,#fce4ec,#f8bbd0); }
+  .bg-pc5  { background:linear-gradient(135deg,#e0f7fa,#b2ebf2); }
+  .bg-pc6  { background:linear-gradient(135deg,#fdf3e3,#fde0b5); }
+  .bg-pc7  { background:linear-gradient(135deg,#fcd5ce,#fec89a); }
+  .bg-pc8  { background:linear-gradient(135deg,#d7f0e4,#b5ead7); }
+  .bg-pc9  { background:linear-gradient(135deg,#e2d9f3,#c5b8ea); }
+  .bg-pc10 { background:linear-gradient(135deg,#fff1c1,#ffe599); }
+
+  /* ===== FOOTER ===== */
+  footer { text-align:center; padding:48px 20px; background:var(--cream); }
+  .footer-msg {
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:clamp(1rem,2.5vw,1.5rem); color:var(--brown); margin-bottom:14px;
+  }
+  footer small { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox {
+    display:none; position:fixed; inset:0;
+    background:rgba(50,30,20,0.8); backdrop-filter:blur(10px);
+    z-index:200; align-items:center; justify-content:center;
+  }
+  .lightbox.open { display:flex; }
+  .lb-inner {
+    position:relative; max-width:90vw; max-height:88vh;
+    animation:popIn 0.3s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes popIn {
+    from { transform:scale(0.85); opacity:0; }
+    to   { transform:scale(1);    opacity:1; }
+  }
+  .lb-inner img {
+    max-width:88vw; max-height:82vh; border-radius:20px;
+    box-shadow:0 24px 80px rgba(0,0,0,0.4); object-fit:contain; display:block;
+  }
+  .lb-close {
+    position:absolute; top:-14px; right:-14px;
+    width:36px; height:36px; border-radius:50%;
+    background:white; border:none; cursor:pointer;
+    font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 16px rgba(0,0,0,0.2); transition:transform 0.2s;
+  }
+  .lb-close:hover { transform:scale(1.1); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="confetti-layer" id="confetti"></div>
+  <p class="hero-badge">✦ a birthday celebration ✦</p>
+  <h1 class="hero-title">Happy Birthday</h1>
+  <p class="hero-name">ぴっぴ へ 🎂</p>
+  <p class="hero-date">2026 . 06 . 23</p>
+  <div class="scroll-hint"><span>scroll</span><div class="scroll-arrow"></div></div>
+</div>
+
+<!-- GALLERY -->
+<div class="section-wrap">
+  <p class="section-label">memories</p>
+  <h2 class="section-title">いっしょに過ごした時間</h2>
+  <div class="gallery-stage" id="galleryStage"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-msg">"素敵な一年が始まりますように"</p>
+  <small>made with love ✦ 2026</small>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-inner">
+    <img id="lbImg" src="" alt="">
+    <button class="lb-close" id="lbClose">✕</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ★ ここだけ設定してください
+
+   photos/ フォルダに photo01.jpg, photo02.jpg ... と
+   連番で入れてください。
+   MAX_PHOTOS は入れる予定の最大枚数より少し多めでOKです。
+   存在しないファイルは自動でスキップされます。
+   ============================================================ */
+const MAX_PHOTOS = 50; // ← これより多く入れなければOK
+
+/* ---- 以下変更不要 ---- */
+const PHOTO_FILES = []; // 存在確認済みが動的に追加される
+
+function buildPhotoList(max) {
+  return Array.from({length: max}, (_, i) => {
+    const n = String(i + 1).padStart(2, '0');
+    return `photos/photo${n}.jpg`;
+  });
+}
+
+function preloadPhotos(candidates, callback) {
+  let checked = 0;
+  const results = new Array(candidates.length).fill(null);
+  candidates.forEach((src, i) => {
+    const img = new Image();
+    img.onload  = () => { results[i] = src; check(); };
+    img.onerror = () => { check(); };
+    img.src = src;
+  });
+  function check() {
+    checked++;
+    if (checked === candidates.length) {
+      results.forEach(s => { if (s) PHOTO_FILES.push(s); });
+      callback();
+    }
+  }
+}
+
+const CARD_LAYOUTS = [
+  { w:220, h:160, top:30,  left:'2%',  rot:-3, z:3 },
+  { w:180, h:220, top:20,  left:'22%', rot: 2, z:4 },
+  { w:240, h:160, top:15,  left:'42%', rot:-1, z:3 },
+  { w:190, h:190, top:10,  left:'68%', rot: 3, z:5 },
+  { w:200, h:150, top:220, left:'5%',  rot: 2, z:4 },
+  { w:170, h:210, top:200, left:'28%', rot:-2, z:3 },
+  { w:220, h:165, top:210, left:'50%', rot: 1, z:4 },
+  { w:185, h:185, top:200, left:'74%', rot:-3, z:3 },
+  { w:210, h:155, top:400, left:'10%', rot:-1, z:4 },
+  { w:240, h:160, top:390, left:'35%', rot: 2, z:3 },
+  { w:190, h:190, top:380, left:'62%', rot:-2, z:4 },
+];
+const BG_CLASSES  = ['bg-pc0','bg-pc1','bg-pc2','bg-pc3','bg-pc4','bg-pc5','bg-pc6','bg-pc7','bg-pc8','bg-pc9','bg-pc10'];
+const EMOJI_LIST  = ['🌸','☀️','🎃','🗻','🍜','🎆','☕','🌊','🎵','🐶','🌙'];
+
+// Confetti
+const confettiColors = ['#f7c5d0','#fde4cc','#fdf4c2','#c8eede','#ddd0f5'];
+const layer = document.getElementById('confetti');
+for (let i = 0; i < 30; i++) {
+  const el = document.createElement('div');
+  el.classList.add('confetti-piece');
+  const size = Math.random() * 14 + 6;
+  el.style.cssText = `
+    width:${size}px;height:${size}px;
+    background:${confettiColors[i%confettiColors.length]};
+    left:${Math.random()*100}%;
+    animation-duration:${Math.random()*10+12}s;
+    animation-delay:${Math.random()*8}s;
+    border-radius:${Math.random()>0.5?'50%':'3px'};
+  `;
+  layer.appendChild(el);
+}
+
+// Shuffle
+function shuffled(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let photoPool = [];
+let poolCursor = 0;
+function resetPool() {
+  photoPool = shuffled([...Array(PHOTO_FILES.length).keys()]);
+  poolCursor = 0;
+}
+function nextPhotoIndex() {
+  if (poolCursor >= photoPool.length) { resetPool(); }
+  return photoPool[poolCursor++];
+}
+
+const stage = document.getElementById('galleryStage');
+const cards = [];
+
+// ギャラリー初期化（写真ロード完了後に呼ばれる）
+function initGallery() {
+  resetPool();
+  // プレースホルダーを写真に差し替え
+  cards.forEach((c, i) => {
+    if (PHOTO_FILES.length === 0) return;
+    const pIdx = nextPhotoIndex();
+    const src  = PHOTO_FILES[pIdx];
+    const img  = document.createElement('img');
+    img.src = src; img.alt = '';
+    img.onerror = () => {};
+    // 既存のプレースホルダーを置き換え
+    const ph = c.el.querySelector('.photo-placeholder-box');
+    if (ph) ph.replaceWith(img);
+    delete c.el.dataset.placeholder;
+    c.photoIndex = pIdx;
+  });
+
+  // Auto-rotate：全写真をくまなく見せるキュー方式
+  setInterval(() => {
+    if (PHOTO_FILES.length <= CARD_LAYOUTS.length) return; // 枚数が枠以下なら切り替え不要
+    const real = cards.filter(c => !c.el.dataset.placeholder);
+    if (real.length < 2) return;
+    const target = real[Math.floor(Math.random() * real.length)];
+    const newIdx = nextPhotoIndex();
+    const newSrc = PHOTO_FILES[newIdx];
+    const img = target.el.querySelector('img');
+    if (!img || !newSrc) return;
+    // 今表示中の写真と被らないようにする
+    const currentSrcs = cards.map(c => c.el.querySelector('img')?.src).filter(Boolean);
+    if (currentSrcs.some(s => s.endsWith(newSrc))) return;
+    img.classList.add('fading');
+    setTimeout(() => {
+      img.src = newSrc;
+      img.onload  = () => img.classList.remove('fading');
+      img.onerror = () => img.classList.remove('fading');
+      target.photoIndex = newIdx;
+    }, 600);
+  }, 3500);
+}
+
+// カード枠を先に生成（プレースホルダーで表示）
+CARD_LAYOUTS.forEach((layout, i) => {
+  const card = document.createElement('div');
+  card.className = 'float-card';
+  card.dataset.placeholder = '1';
+  card.style.cssText = `width:${layout.w}px;height:${layout.h}px;top:${layout.top}px;left:${layout.left};transform:rotate(${layout.rot}deg);z-index:${layout.z};`;
+
+  const box = document.createElement('div');
+  box.className = `photo-placeholder-box ${BG_CLASSES[i % BG_CLASSES.length]}`;
+  box.innerHTML = `<div class="ph-icon">${EMOJI_LIST[i % EMOJI_LIST.length]}</div>`;
+  card.appendChild(box);
+
+  card.addEventListener('click', () => {
+    const imgEl = card.querySelector('img');
+    if (imgEl && !card.dataset.placeholder) openLightbox(imgEl.src);
+  });
+  stage.appendChild(card);
+  cards.push({ el: card, photoIndex: -1 });
+});
+
+// 写真の存在確認が終わったら初期化
+preloadPhotos(buildPhotoList(MAX_PHOTOS), initGallery);
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lbImg');
+document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', e => { if (e.target===lightbox) lightbox.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') lightbox.classList.remove('open'); });
+function openLightbox(src) { lbImg.src=src; lightbox.classList.add('open'); }
+</script>
+</body>
+</html>
