@@ -146,6 +146,24 @@
   }
   footer small { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
 
+  /* ===== BGM BUTTON ===== */
+  #bgmBtn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 300;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+    border: 2px solid var(--pink);
+    font-size: 1.3rem; color: var(--brown);
+    cursor: pointer; box-shadow: 0 4px 16px rgba(120,80,60,0.15);
+    transition: transform 0.2s, background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #bgmBtn:hover { transform: scale(1.1); background: var(--pink); }
+  #bgmBtn.playing { animation: pulse 2s ease infinite; }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 4px 16px rgba(120,80,60,0.15); }
+    50%      { box-shadow: 0 4px 24px rgba(196,122,122,0.4); }
+  }
+
   /* ===== LIGHTBOX ===== */
   .lightbox {
     display:none; position:fixed; inset:0;
@@ -199,6 +217,10 @@
   <p class="footer-msg">"素敵な一年が始まりますように"</p>
   <small>made with love ✦ 2026</small>
 </footer>
+
+<!-- BGM -->
+<audio id="bgm" src="kimi-ga-shuyaku-da.mp3" loop preload="auto"></audio>
+<button id="bgmBtn" title="音楽の再生／停止">♩</button>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -323,26 +345,28 @@ function initGallery() {
     c.photoIndex = pIdx;
   });
 
-  // Auto-rotate：全写真をくまなく見せるキュー方式
+  // Auto-rotate：1〜3枚ランダムに切り替え
   setInterval(() => {
-    if (PHOTO_FILES.length <= CARD_LAYOUTS.length) return; // 枚数が枠以下なら切り替え不要
+    if (PHOTO_FILES.length <= CARD_LAYOUTS.length) return;
     const real = cards.filter(c => !c.el.dataset.placeholder);
-    if (real.length < 2) return;
-    const target = real[Math.floor(Math.random() * real.length)];
-    const newIdx = nextPhotoIndex();
-    const newSrc = PHOTO_FILES[newIdx];
-    const img = target.el.querySelector('img');
-    if (!img || !newSrc) return;
-    // 今表示中の写真と被らないようにする
-    const currentSrcs = cards.map(c => c.el.querySelector('img')?.src).filter(Boolean);
-    if (currentSrcs.some(s => s.endsWith(newSrc))) return;
-    img.classList.add('fading');
-    setTimeout(() => {
-      img.src = newSrc;
-      img.onload  = () => img.classList.remove('fading');
-      img.onerror = () => img.classList.remove('fading');
-      target.photoIndex = newIdx;
-    }, 600);
+    if (real.length < 1) return;
+    const count = Math.floor(Math.random() * 3) + 1; // 1〜3枚
+    const targets = [...real].sort(() => Math.random() - 0.5).slice(0, count);
+    targets.forEach(target => {
+      const newIdx = nextPhotoIndex();
+      const newSrc = PHOTO_FILES[newIdx];
+      const img = target.el.querySelector('img');
+      if (!img || !newSrc) return;
+      const currentSrcs = cards.map(c => c.el.querySelector('img')?.src).filter(Boolean);
+      if (currentSrcs.some(s => s.endsWith(newSrc))) return;
+      img.classList.add('fading');
+      setTimeout(() => {
+        img.src = newSrc;
+        img.onload  = () => img.classList.remove('fading');
+        img.onerror = () => img.classList.remove('fading');
+        target.photoIndex = newIdx;
+      }, 600);
+    });
   }, 2000);
 }
 
@@ -376,6 +400,42 @@ document.getElementById('lbClose').addEventListener('click', () => lightbox.clas
 lightbox.addEventListener('click', e => { if (e.target===lightbox) lightbox.classList.remove('open'); });
 document.addEventListener('keydown', e => { if (e.key==='Escape') lightbox.classList.remove('open'); });
 function openLightbox(src) { lbImg.src=src; lightbox.classList.add('open'); }
+
+// BGM
+const bgm = document.getElementById('bgm');
+const bgmBtn = document.getElementById('bgmBtn');
+let bgmStarted = false;
+
+function startBgm() {
+  bgm.play().then(() => {
+    bgmBtn.textContent = '♪';
+    bgmBtn.classList.add('playing');
+  }).catch(() => {});
+}
+
+// 最初のクリック・タップで自動再生
+function onFirstInteraction() {
+  if (bgmStarted) return;
+  bgmStarted = true;
+  startBgm();
+  document.removeEventListener('click', onFirstInteraction);
+  document.removeEventListener('touchstart', onFirstInteraction);
+}
+document.addEventListener('click', onFirstInteraction);
+document.addEventListener('touchstart', onFirstInteraction);
+
+bgmBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (bgm.paused) {
+    bgm.play();
+    bgmBtn.textContent = '♪';
+    bgmBtn.classList.add('playing');
+  } else {
+    bgm.pause();
+    bgmBtn.textContent = '♩';
+    bgmBtn.classList.remove('playing');
+  }
+});
 </script>
 </body>
 </html>
