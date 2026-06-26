@@ -46,8 +46,7 @@
   .hero-badge {
     font-family:'Playfair Display',serif; font-style:italic;
     font-size:clamp(0.85rem,2vw,1rem); color:var(--muted);
-    letter-spacing:0.15em; margin-bottom:16px;
-    animation:fadeUp 1s ease both;
+    letter-spacing:0.15em; margin-bottom:16px; animation:fadeUp 1s ease both;
   }
   .hero-title {
     font-family:'Playfair Display',serif;
@@ -85,7 +84,7 @@
   }
   @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
-  /* ===== GALLERY ===== */
+  /* ===== SECTION COMMON ===== */
   .section-wrap { padding:80px 20px; max-width:1100px; margin:0 auto; }
   .section-label {
     font-family:'Playfair Display',serif; font-style:italic;
@@ -98,6 +97,7 @@
     text-align:center; color:var(--text); margin-bottom:48px;
   }
 
+  /* ===== GALLERY ===== */
   .gallery-stage {
     position:relative; width:100%; height:560px;
     border-radius:32px; overflow:hidden;
@@ -106,14 +106,12 @@
   }
   .float-card {
     position:absolute; border-radius:18px; overflow:hidden;
-    box-shadow:0 8px 32px rgba(100,60,40,0.18);
-    cursor:pointer;
+    box-shadow:0 8px 32px rgba(100,60,40,0.18); cursor:pointer;
     transition:transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
   }
   .float-card:hover {
     transform:scale(1.06) rotate(0deg) !important;
-    box-shadow:0 18px 50px rgba(100,60,40,0.28);
-    z-index:20 !important;
+    box-shadow:0 18px 50px rgba(100,60,40,0.28); z-index:20 !important;
   }
   .float-card img {
     width:100%; height:100%; object-fit:cover; display:block;
@@ -138,13 +136,73 @@
   .bg-pc9  { background:linear-gradient(135deg,#e2d9f3,#c5b8ea); }
   .bg-pc10 { background:linear-gradient(135deg,#fff1c1,#ffe599); }
 
+  /* ===== MESSAGES ===== */
+  .messages-section {
+    background:linear-gradient(160deg,var(--pink) 0%,var(--lavender) 50%,var(--mint) 100%);
+    padding:80px 20px; position:relative; overflow:hidden;
+  }
+  .messages-section::before {
+    content:''; position:absolute; top:-60px; left:-60px;
+    width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.3);
+  }
+  .messages-section::after {
+    content:''; position:absolute; bottom:-80px; right:-40px;
+    width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.2);
+  }
+  .messages-inner { max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+
+  /* メッセージ登場アニメ */
+  .msg-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px;
+  }
+  .msg-card {
+    background:rgba(255,255,255,0.85); backdrop-filter:blur(12px);
+    border-radius:20px; overflow:hidden;
+    box-shadow:0 4px 24px rgba(120,80,60,0.12);
+    transition:transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+    cursor:pointer;
+    opacity:0; transform:translateY(40px);
+    animation:cardAppear 0.7s ease forwards;
+  }
+  @keyframes cardAppear {
+    to { opacity:1; transform:translateY(0); }
+  }
+  .msg-card:hover {
+    transform:translateY(-8px) rotate(0.5deg) !important;
+    box-shadow:0 20px 48px rgba(120,80,60,0.22);
+  }
+  .msg-card img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+  .msg-card-footer { padding:12px 16px; }
+  .msg-num {
+    font-size:0.72rem; color:var(--muted);
+    font-style:italic; font-family:'Playfair Display',serif;
+  }
+  .msg-placeholder {
+    width:100%; aspect-ratio:4/3;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; font-size:0.78rem; color:var(--muted);
+  }
+  .msg-placeholder .ph-icon { font-size:2.2rem; opacity:0.5; }
+  .msg-ph-bg0 { background:linear-gradient(135deg,#fce4ec,#f8bbd0); }
+  .msg-ph-bg1 { background:linear-gradient(135deg,#d7f0e4,#b5ead7); }
+  .msg-ph-bg2 { background:linear-gradient(135deg,#e2d9f3,#c5b8ea); }
+  .msg-ph-bg3 { background:linear-gradient(135deg,#fff1c1,#ffe599); }
+  .msg-ph-bg4 { background:linear-gradient(135deg,#e0f7fa,#b2ebf2); }
+
   /* ===== FOOTER ===== */
-  footer { text-align:center; padding:48px 20px; background:var(--cream); }
+  footer { text-align:center; padding:60px 20px; background:var(--cream); }
   .footer-msg {
     font-family:'Playfair Display',serif; font-style:italic;
-    font-size:clamp(1rem,2.5vw,1.5rem); color:var(--brown); margin-bottom:14px;
+    font-size:clamp(1.2rem,3vw,1.8rem); color:var(--brown); margin-bottom:16px;
   }
-  footer small { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
+  .footer-heart { font-size:2rem; animation:heartbeat 1.5s ease infinite; }
+  @keyframes heartbeat {
+    0%,100% { transform:scale(1); }
+    30%      { transform:scale(1.25); }
+    50%      { transform:scale(1); }
+    70%      { transform:scale(1.15); }
+  }
+  footer small { display:block; margin-top:24px; font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
 
   /* ===== BGM BUTTON ===== */
   #bgmBtn {
@@ -201,7 +259,7 @@
   <p class="hero-badge">✦ a birthday celebration ✦</p>
   <h1 class="hero-title">Happy Birthday</h1>
   <p class="hero-name">ぴっぴ へ 🎂</p>
-  <p class="hero-date">2026 . 06 . 23</p>
+  <p class="hero-date">2026 . 06 . 26</p>
   <div class="scroll-hint"><span>scroll</span><div class="scroll-arrow"></div></div>
 </div>
 
@@ -212,9 +270,19 @@
   <div class="gallery-stage" id="galleryStage"></div>
 </div>
 
+<!-- MESSAGES -->
+<div class="messages-section">
+  <div class="messages-inner">
+    <p class="section-label" style="color:rgba(255,255,255,0.85);">messages</p>
+    <h2 class="section-title" style="color:var(--brown);">みんなからのメッセージ</h2>
+    <div class="msg-grid" id="msgGrid"></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p class="footer-msg">"素敵な一年が始まりますように"</p>
+  <div class="footer-heart">🎂</div>
   <small>made with love ✦ 2026</small>
 </footer>
 
@@ -234,24 +302,26 @@
 /* ============================================================
    ★ ここだけ設定してください
 
-   photos/ フォルダに photo01.jpg, photo02.jpg ... と
-   連番で入れてください。
-   MAX_PHOTOS は入れる予定の最大枚数より少し多めでOKです。
-   存在しないファイルは自動でスキップされます。
+   photos/  → photo01.jpg, photo02.jpg ... と連番で入れる
+   messages/ → msg01.jpg, msg02.jpg ... と連番で入れる
+   各MAXは入れる予定の最大枚数より少し多めでOK。
+   存在しないファイルは自動スキップされます。
    ============================================================ */
-const MAX_PHOTOS = 50; // ← これより多く入れなければOK
+const MAX_PHOTOS = 50;
+const MAX_MSGS   = 30;
 
 /* ---- 以下変更不要 ---- */
-const PHOTO_FILES = []; // 存在確認済みが動的に追加される
+const PHOTO_FILES = [];
+const MSG_FILES   = [];
 
-function buildPhotoList(max) {
+function buildList(prefix, ext, max) {
   return Array.from({length: max}, (_, i) => {
     const n = String(i + 1).padStart(2, '0');
-    return `photos/photo${n}.jpg`;
+    return `${prefix}${n}${ext}`;
   });
 }
 
-function preloadPhotos(candidates, callback) {
+function preloadList(candidates, target, callback) {
   let checked = 0;
   const results = new Array(candidates.length).fill(null);
   candidates.forEach((src, i) => {
@@ -263,7 +333,7 @@ function preloadPhotos(candidates, callback) {
   function check() {
     checked++;
     if (checked === candidates.length) {
-      results.forEach(s => { if (s) PHOTO_FILES.push(s); });
+      results.forEach(s => { if (s) target.push(s); });
       callback();
     }
   }
@@ -282,16 +352,16 @@ const CARD_LAYOUTS = [
   { w:240, h:160, top:390, left:'35%', rot: 2, z:3 },
   { w:190, h:190, top:380, left:'62%', rot:-2, z:4 },
 ];
-const BG_CLASSES  = ['bg-pc0','bg-pc1','bg-pc2','bg-pc3','bg-pc4','bg-pc5','bg-pc6','bg-pc7','bg-pc8','bg-pc9','bg-pc10'];
-const EMOJI_LIST  = ['🌸','☀️','🎃','🗻','🍜','🎆','☕','🌊','🎵','🐶','🌙'];
+const BG_CLASSES = ['bg-pc0','bg-pc1','bg-pc2','bg-pc3','bg-pc4','bg-pc5','bg-pc6','bg-pc7','bg-pc8','bg-pc9','bg-pc10'];
+const EMOJI_LIST = ['🌸','☀️','🎃','🗻','🍜','🎆','☕','🌊','🎵','🐶','🌙'];
 
 // Confetti
 const confettiColors = ['#f7c5d0','#fde4cc','#fdf4c2','#c8eede','#ddd0f5'];
 const layer = document.getElementById('confetti');
-for (let i = 0; i < 30; i++) {
+for (let i=0; i<30; i++) {
   const el = document.createElement('div');
   el.classList.add('confetti-piece');
-  const size = Math.random() * 14 + 6;
+  const size = Math.random()*14+6;
   el.style.cssText = `
     width:${size}px;height:${size}px;
     background:${confettiColors[i%confettiColors.length]};
@@ -305,14 +375,13 @@ for (let i = 0; i < 30; i++) {
 
 // Shuffle
 function shuffled(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i>0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
+  const a=[...arr];
+  for (let i=a.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
     [a[i],a[j]]=[a[j],a[i]];
   }
   return a;
 }
-
 let photoPool = [];
 let poolCursor = 0;
 function resetPool() {
@@ -320,37 +389,50 @@ function resetPool() {
   poolCursor = 0;
 }
 function nextPhotoIndex() {
-  if (poolCursor >= photoPool.length) { resetPool(); }
+  if (poolCursor >= photoPool.length) resetPool();
   return photoPool[poolCursor++];
 }
 
 const stage = document.getElementById('galleryStage');
 const cards = [];
 
-// ギャラリー初期化（写真ロード完了後に呼ばれる）
+// カード枠を先に生成（プレースホルダー）
+CARD_LAYOUTS.forEach((layout, i) => {
+  const card = document.createElement('div');
+  card.className = 'float-card';
+  card.dataset.placeholder = '1';
+  card.style.cssText = `width:${layout.w}px;height:${layout.h}px;top:${layout.top}px;left:${layout.left};transform:rotate(${layout.rot}deg);z-index:${layout.z};`;
+  const box = document.createElement('div');
+  box.className = `photo-placeholder-box ${BG_CLASSES[i%BG_CLASSES.length]}`;
+  box.innerHTML = `<div class="ph-icon">${EMOJI_LIST[i%EMOJI_LIST.length]}</div>`;
+  card.appendChild(box);
+  card.addEventListener('click', () => {
+    const imgEl = card.querySelector('img');
+    if (imgEl && !card.dataset.placeholder) openLightbox(imgEl.src);
+  });
+  stage.appendChild(card);
+  cards.push({ el: card, photoIndex: -1 });
+});
+
 function initGallery() {
   resetPool();
-  // プレースホルダーを写真に差し替え
-  cards.forEach((c, i) => {
-    if (PHOTO_FILES.length === 0) return;
+  cards.forEach(c => {
+    if (!PHOTO_FILES.length) return;
     const pIdx = nextPhotoIndex();
-    const src  = PHOTO_FILES[pIdx];
-    const img  = document.createElement('img');
-    img.src = src; img.alt = '';
-    img.onerror = () => {};
-    // 既存のプレースホルダーを置き換え
+    const img = document.createElement('img');
+    img.src = PHOTO_FILES[pIdx]; img.alt = '';
     const ph = c.el.querySelector('.photo-placeholder-box');
     if (ph) ph.replaceWith(img);
     delete c.el.dataset.placeholder;
     c.photoIndex = pIdx;
   });
 
-  // Auto-rotate：1〜3枚ランダムに切り替え
   setInterval(() => {
     if (PHOTO_FILES.length <= CARD_LAYOUTS.length) return;
     const real = cards.filter(c => !c.el.dataset.placeholder);
-    if (real.length < 1) return;
-    const count = Math.floor(Math.random() * 3) + 1; // 1〜3枚
+    if (real.length < 2) return;
+    // Auto-rotate：1〜3枚ランダムに切り替え
+    const count = Math.floor(Math.random() * 3) + 1;
     const targets = [...real].sort(() => Math.random() - 0.5).slice(0, count);
     targets.forEach(target => {
       const newIdx = nextPhotoIndex();
@@ -370,36 +452,52 @@ function initGallery() {
   }, 3500);
 }
 
-// カード枠を先に生成（プレースホルダーで表示）
-CARD_LAYOUTS.forEach((layout, i) => {
-  const card = document.createElement('div');
-  card.className = 'float-card';
-  card.dataset.placeholder = '1';
-  card.style.cssText = `width:${layout.w}px;height:${layout.h}px;top:${layout.top}px;left:${layout.left};transform:rotate(${layout.rot}deg);z-index:${layout.z};`;
-
-  const box = document.createElement('div');
-  box.className = `photo-placeholder-box ${BG_CLASSES[i % BG_CLASSES.length]}`;
-  box.innerHTML = `<div class="ph-icon">${EMOJI_LIST[i % EMOJI_LIST.length]}</div>`;
-  card.appendChild(box);
-
-  card.addEventListener('click', () => {
-    const imgEl = card.querySelector('img');
-    if (imgEl && !card.dataset.placeholder) openLightbox(imgEl.src);
+// メッセージカード生成
+function initMessages() {
+  const msgGrid = document.getElementById('msgGrid');
+  const MSG_BG = ['msg-ph-bg0','msg-ph-bg1','msg-ph-bg2','msg-ph-bg3','msg-ph-bg4'];
+  MSG_FILES.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'msg-card';
+    card.style.animationDelay = `${i * 0.12}s`;
+    const imgEl = document.createElement('img');
+    imgEl.src = src; imgEl.alt = `メッセージ ${i+1}`;
+    imgEl.onerror = () => {
+      const ph = document.createElement('div');
+      ph.className = `msg-placeholder ${MSG_BG[i%MSG_BG.length]}`;
+      ph.innerHTML = `<div class="ph-icon">💌</div><span>message ${String(i+1).padStart(2,'0')}</span>`;
+      imgEl.replaceWith(ph);
+    };
+    const footer = document.createElement('div');
+    footer.className = 'msg-card-footer';
+    footer.innerHTML = `<span class="msg-num">message ${String(i+1).padStart(2,'0')}</span>`;
+    card.appendChild(imgEl);
+    card.appendChild(footer);
+    card.addEventListener('click', () => {
+      const s = card.querySelector('img')?.src;
+      if (s) openLightbox(s);
+    });
+    msgGrid.appendChild(card);
   });
-  stage.appendChild(card);
-  cards.push({ el: card, photoIndex: -1 });
-});
+}
 
-// 写真の存在確認が終わったら初期化
-preloadPhotos(buildPhotoList(MAX_PHOTOS), initGallery);
+// 写真・メッセージ画像を並行してプリロード
+let doneCount = 0;
+function onPartReady() {
+  doneCount++;
+  if (doneCount === 1) initGallery();   // 写真準備完了→ギャラリー初期化
+  if (doneCount === 2) initMessages();  // メッセージ準備完了→カード生成
+}
+preloadList(buildList('photos/photo', '.jpg', MAX_PHOTOS), PHOTO_FILES, onPartReady);
+preloadList(buildList('messages/msg', '.jpg', MAX_MSGS),  MSG_FILES,   onPartReady);
 
 // Lightbox
-const lightbox = document.getElementById('lightbox');
-const lbImg    = document.getElementById('lbImg');
-document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
-lightbox.addEventListener('click', e => { if (e.target===lightbox) lightbox.classList.remove('open'); });
-document.addEventListener('keydown', e => { if (e.key==='Escape') lightbox.classList.remove('open'); });
-function openLightbox(src) { lbImg.src=src; lightbox.classList.add('open'); }
+const lightbox=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+document.getElementById('lbClose').addEventListener('click',()=>lightbox.classList.remove('open'));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lightbox.classList.remove('open');});
+function openLightbox(src){lbImg.src=src;lightbox.classList.add('open');}
 
 // BGM
 const bgm = document.getElementById('bgm');
@@ -413,7 +511,6 @@ function startBgm() {
   }).catch(() => {});
 }
 
-// 最初のクリック・タップで自動再生
 function onFirstInteraction() {
   if (bgmStarted) return;
   bgmStarted = true;
